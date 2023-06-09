@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
+    "@tronweb3/tronwallet-adapter-walletconnect": "^1.0.3",
     "@tronweb3/walletconnect-tron": "^2.0.0",
     "@tronwidgets/transaction": "^1.0.0",
     "react": "^18.2.0",
