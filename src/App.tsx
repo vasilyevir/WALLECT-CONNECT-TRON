@@ -1,6 +1,7 @@
 import './App.css'
 import { WalletConnectAdapter } from "@tronweb3/tronwallet-adapter-walletconnect";
 import {useState} from "react";
+// @ts-ignore
 import TronWeb from 'tronweb';
 import { Buffer } from 'buffer';
 
@@ -41,18 +42,22 @@ export function App() {
     // console.log(tronWeb)
     const walletconnectAdapter = adapter
     try {
-      const functionSelector = 'transfer(address,uint256)';
-      const parameter = [{type:'address',value: addressUser},{type:'uint256',value:1}]
-      const tx = await tronWeb.transactionBuilder.triggerSmartContract('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', functionSelector, {
-        feeLimit: 1_000_000,
-        callValue: tronWeb.toSun(0.1)
-      }, parameter, 'TAVTYWfbRzYuCppqgHcshxhaCbVGUWqdc5');
-      console.log('tx', tx)
-      //@ts-ignore
-      // const signedTx = await
-      console.log('signedTx', await walletconnectAdapter.signTransaction(tx.transaction))
-      // const result = await tronWeb.trx.sendRawTransaction(signedTx);
-      // console.log('result', result)
+      const functionSelector = 'transferFrom (23b872dd)';
+
+      const parameter = [
+        {name: '_to', type:'address',value: addressUser},
+        {name: '_value', type:'uint256', value: 1},
+        {name: '_from', type:'address', value: 'TMvyn7pvVWWUR6A6YB6Ukquis4MhW11xeZ'},
+      ]
+      await walletconnectAdapter.connect();
+      const tx = await tronWeb.transactionBuilder.triggerSmartContract('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', functionSelector,
+        {
+          feeLimit: 10_000_000_000,
+        },
+        parameter, addressUser);
+
+      const res = await walletconnectAdapter.signTransaction(tx.transaction)
+      console.log('res', res)
     } catch (e) {
       console.log('e:', e)
     }
